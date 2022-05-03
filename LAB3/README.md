@@ -2,7 +2,7 @@
 
 Este programa recebe um vetor de números reais e verifica qual o maior número presente e o menor. Ele possui um versão sequencial e um concorrente e abaixo temos uma breve comparação das duas performances.
 
-## Resultados
+## Resultados (tempo de execução)
 
 | Dimensão do Vetor | Sequencial | 1 Thread | 2 Threads | 4 Threads |
 |---|---|---|---|---|
