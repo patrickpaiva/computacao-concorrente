@@ -7,7 +7,7 @@ Exemplo:
 Vetor de entrada: [1,2,3,4,5,6,7,8,9,10]
 Vetor de Saída: [1,1.41,1.73,4,2.24,6,2.65,8,9,10]
 
-## Resultados (tempo de execução)
+## Resultados (tempo de execução em segundos)
 
 | Dimensão do Vetor | Sequencial | 1 Thread | 2 Threads | 4 Threads |
 |---|---|---|---|---|
