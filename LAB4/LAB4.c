@@ -13,16 +13,13 @@ double *vetorSaidaConc; //vetor de saida da funcao concocrente com dimensao dim
 int i_global = 0;
 pthread_mutex_t mutex; //variavel de lock para exclusao mutua
 
-int ehPrimo(int n) {    // retorna 1 se for primo e 0 se não for.
-  int marcador = 1;
+int ehPrimo(long long int n) {    // retorna 1 se for primo e 0 se não for.
   if (n == 2) return 1;
   if(n <= 1 || n % 2 == 0) return 0;
   for(int i=3; i< sqrt(n)+1; i+=2){
-    if(n % i == 0){
-      marcador = 0;
-    }
+    if(n % i == 0) return 0;
   }
-  return marcador;
+  return 1;
 }
 
 void *tarefa(void * arg) {
@@ -66,7 +63,7 @@ int main(int argc, char *argv[]) {
    }
 
    //preenche o vetor de entrada
-   for(long int i=0; i<dim; i++)
+   for(int i=0; i<dim; i++)
       vetor[i] = i;
 
    //Implementação Sequencial
@@ -94,7 +91,7 @@ int main(int argc, char *argv[]) {
    }
    //criar as threads
    for(long int i=0; i<nthreads; i++) {
-      if(pthread_create(tid+i, NULL, tarefa, (void*) i)){
+      if(pthread_create(tid+i, NULL, tarefa, NULL)){
          fprintf(stderr, "ERRO--pthread_create\n");
          return 3;
       }
