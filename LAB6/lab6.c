@@ -15,6 +15,7 @@
 //variaveis do problema
 int leit=0; //contador de threads lendo
 int escr=0; //contador de threads escrevendo
+int querEscrever=0; //contador de threads que querem escrever mas estao aguardando desbloqueio
 
 //variaveis para sincronizacao
 pthread_mutex_t mutex;
@@ -24,7 +25,7 @@ pthread_cond_t cond_leit, cond_escr;
 void InicLeit (int id) {
    pthread_mutex_lock(&mutex);
    printf("L[%d] quer ler\n", id);
-   while(escr > 0) {
+   while(escr > 0 || querEscrever > 0) {
      printf("L[%d] bloqueou\n", id);
      pthread_cond_wait(&cond_leit, &mutex);
      printf("L[%d] desbloqueou\n", id);
@@ -48,7 +49,9 @@ void InicEscr (int id) {
    printf("E[%d] quer escrever\n", id);
    while((leit>0) || (escr>0)) {
      printf("E[%d] bloqueou\n", id);
+     querEscrever++;
      pthread_cond_wait(&cond_escr, &mutex);
+     querEscrever--;
      printf("E[%d] desbloqueou\n", id);
    }
    escr++;
@@ -61,7 +64,9 @@ void FimEscr (int id) {
    printf("E[%d] terminou de escrever\n", id);
    escr--;
    pthread_cond_signal(&cond_escr);
-   pthread_cond_broadcast(&cond_leit);
+   if(querEscrever == 0){
+    pthread_cond_broadcast(&cond_leit);
+   }
    pthread_mutex_unlock(&mutex);
 }
 
@@ -106,13 +111,19 @@ int main(void) {
   for(int i=0; i<L; i++) {
     id[i] = i+1;
     if(pthread_create(&tid[i], NULL, leitor, (void *) &id[i])) exit(-1);
-  } 
+  }
   
   //cria as threads escritoras
   for(int i=0; i<E; i++) {
     id[i+L] = i+1;
     if(pthread_create(&tid[i+L], NULL, escritor, (void *) &id[i+L])) exit(-1);
-  } 
+  }
+
+  // aguardas as threads terminarem
+  for (int i = 0; i < (L+E); i++) {
+    pthread_join(tid[i], NULL);
+  }
+  printf ("FIM.\n"); 
 
   pthread_exit(NULL);
   return 0;
