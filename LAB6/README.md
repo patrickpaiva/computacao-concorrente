@@ -1,5 +1,8 @@
 # LAB 6
 
+Disciplina: Computacao Concorrente(UFRJ) - 2022.1
+Prof.: Silvana Rossetto
+
 Este é um programa concorrente do tradicional problema de leitores/escritores. Na versão original existe uma estrutura de dados compartilhada, sendo que leitores podem ler ao mesmo tempo que outros leitores, no entanto, escritores somente podem escrever quando não houver nenhum leitor lendo ou outro escritor escrevendo.
 
 Nesse cenário ocorre que leitores ganham preferência e por vezes ocorre de escritores aguardarem muito para conseguir agir. Nesta adaptação o objetivo foi transferir a preferência para os escritores. Sempre que houver escritores na fila para escreverem, eles têm preferência e por isso os leitores ficam aguardando até que não haja nenhum escritor aguardando.
@@ -77,3 +80,62 @@ L[4] quer ler
 Leitora 4 esta lendo  
 L[3] terminou de ler  
 L[4] terminou de ler  
+
+## Exemplo de execução com 2 leitores e 4 escritores:
+
+L[1] quer ler  
+Leitora 1 esta lendo  
+L[2] quer ler  
+Leitora 2 esta lendo  
+E[1] quer escrever  
+E[1] bloqueou  
+E[2] quer escrever  
+E[2] bloqueou  
+E[3] quer escrever  
+E[3] bloqueou  
+E[4] quer escrever  
+E[4] bloqueou  
+L[1] terminou de ler  
+L[2] terminou de ler  
+E[1] desbloqueou  
+Escritora 1 esta escrevendo  
+E[1] terminou de escrever  
+E[2] desbloqueou  
+Escritora 2 esta escrevendo  
+E[2] terminou de escrever  
+E[3] desbloqueou  
+Escritora 3 esta escrevendo  
+E[3] terminou de escrever  
+E[4] desbloqueou  
+Escritora 4 esta escrevendo  
+E[4] terminou de escrever  
+E[1] quer escrever  
+Escritora 1 esta escrevendo  
+L[2] quer ler  
+L[2] bloqueou  
+L[1] quer ler  
+L[1] bloqueou  
+E[2] quer escrever  
+E[2] bloqueou  
+E[1] terminou de escrever  
+E[2] desbloqueou  
+Escritora 2 esta escrevendo  
+E[2] terminou de escrever  
+L[1] desbloqueou  
+Leitora 1 esta lendo  
+L[2] desbloqueou  
+Leitora 2 esta lendo  
+L[1] terminou de ler  
+L[2] terminou de ler  
+E[3] quer escrever  
+Escritora 3 esta escrevendo  
+E[4] quer escrever  
+E[4] bloqueou  
+E[3] terminou de escrever  
+E[4] desbloqueou  
+Escritora 4 esta escrevendo  
+E[4] terminou de escrever  
+
+## Conclusões
+
+É possível perceber que a preferência foi respeitada conforme previsto em ambos os exemplos.
