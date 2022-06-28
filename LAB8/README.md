@@ -1,6 +1,6 @@
 # LAB 8
 
-Disciplina: Computacao Concorrente(UFRJ) - 2022.1
+Disciplina: Computacao Concorrente(UFRJ) - 2022.1  
 Prof.: Silvana Rossetto
 
 Este é um programa que implementa o padrão de leitores e escritores para acessar uma variável compartilhada. 
