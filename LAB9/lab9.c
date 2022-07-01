@@ -18,9 +18,6 @@ dois em qualquer ordem. ****/
 
 /* Variaveis globais */
 int x = 0;
-pthread_mutex_t x_mutex;
-//pthread_cond_t x_cond; // Fila para as threads intermediarias
-//pthread_cond_t x_cond2; // Fila para o Volte Sempre
 sem_t x_cond;
 sem_t x_cond2;
 
