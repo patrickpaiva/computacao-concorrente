@@ -5,22 +5,10 @@
 #include <time.h>
 #include <stdlib.h>
 #include "timer.h"
+#include "gerarMatriz.c"
 
 int nthreads, n; //numero de threads e tamanho da matriz nxn
-// double a[10000][10000],b[10000],x[10000], xn[10000];
-double *a,*b,*x, *xn;
-
-void gerarMatrix(int tamanho){
-	srand(time(NULL));
-	for(int i = 0; i<tamanho; i++){
-		for(int j = 0; j<tamanho; j++){
-			a[i*tamanho+j] = (rand() % 10) + 1;
-			if(i==j){
-				a[i*tamanho+j] = (rand() % 10 + 1)*tamanho*10;
-			}
-		}
-	}
-}
+double **a,*b,*x, *xn;
 
 void gerarVetorB(int tamanho){
 	srand(time(NULL));
@@ -36,10 +24,11 @@ void *tarefa(void *arg){
 	for(i=id;i<n;i+=nthreads){
 		parcial=b[i];
 		for(j=0;j<n;j++){
-			if(j!=i)
-				parcial-=(a[i*n+j])*(x[j]);
+			if(j!=i){
+				parcial-=(*(*(a + i)+j))*(x[j]);
+			}
 		}
-		xn[i]=parcial/(a[i*n+i]);
+		xn[i]=parcial/(*(*(a + i)+i));
 	}
 	pthread_exit(NULL);
 }
@@ -47,6 +36,7 @@ void *tarefa(void *arg){
 int main(int argc, char *argv[])
 {
 	double ini, fim; //tomada de tempo
+	GET_TIME(ini);
 	double epsilon=0.00001;
 	int i,j,flag;
 	pthread_t *tid; //identificadores das threads no sistema
@@ -58,13 +48,13 @@ int main(int argc, char *argv[])
   }
 	nthreads = atoi(argv[1]);
 	n = atoi(argv[2]);
-	// printf("\nInsira o numero de variaveis do sistema: ");
-	// scanf("%d",&n);
-	// getchar();
 
 	// aloca espaço para as estruturas de dados
 	tid = (pthread_t *) malloc(sizeof(pthread_t) * nthreads);
-	a = (double *) malloc(n * n * sizeof(double));
+	a = (double **) malloc(n * sizeof(double*));
+	for(int i = 0; i < n; i++){
+    *(a + i) =(double *) malloc(sizeof(double) * n);
+  }
 	b = (double *) malloc(n * sizeof(double));
 	x = (double *) malloc(n * sizeof(double));
 	xn = (double *) malloc(n * sizeof(double));
@@ -74,49 +64,18 @@ int main(int argc, char *argv[])
 		return 2;
 	}
 	// printf("\nInsira os coeficientes do sistema em linha: ");
-	gerarMatrix(n);
+	gerarMatriz(n, a, nthreads);
 	gerarVetorB(n);
-	// printf("Verifica a matriz: \n");
-	// for(int i = 0; i < n; i++){
-	// 	for(int j = 0; j< n; j++){
-	// 		printf("%lf ", a[i*n+j]);
-	// 	}
-	// 	printf("\n");
-	// }
-	// printf("Verifica o b: \n");
-	// for(int i = 0; i< n; i++){
-	// 	printf("%lf ", b[i]);
-	// }
-	// printf("\n");
-	// for(i=0;i<n;i++)
-	// {
-	// 	for(j=0;j<n;j++)
-	// 	{
-	// 		scanf("%lf",&a[i][j]);
-	// 	}
-	// }
-	// printf("\nInsira o vetor b: ");
-	// for(i=0;i<n;i++)
-	// 	scanf("%lf",&b[i]);
+
 	for(i=0;i<n;i++)
 		x[i]=0; //inicializa o vetor x com zeros
 
+	GET_TIME(fim);
+  printf("Tempo gasto na preparacao:  %lf\n", fim-ini);
 
-	// for(i=0;i<n;i++)
-	// 	printf(" x[%d] ",i);
-	// printf("\n");
 	GET_TIME(ini);
 	do
 	{
-		// for(i=0;i<n;i++) // neste for entra a concorrencia, cada thread pega um xn
-		// {
-		// 	sum=b[i];
-		// 	for(j=0;j<n;j++)
-		// 		if(j!=i)
-		// 			sum-=a[i][j]*x[j];
-		// 		xn[i]=sum/a[i][i];
-		// }
-
 		//criar as threads
 		for(long int i=0; i<nthreads; i++) {
 				if(pthread_create(tid+i, NULL, tarefa, (void*) i)){
@@ -131,10 +90,6 @@ int main(int argc, char *argv[])
 			} 
 		}
 
-
-		// for(i=0;i<n;i++)
-		// 	printf("%8.5f ",xn[i]);
-		// printf("\n");
 		flag=1; 
 		//verifica condicao de parada |x[i]-xn[i]|<epsilon para todo i
 		for(i=0;i<n;i++){
@@ -149,11 +104,10 @@ int main(int argc, char *argv[])
 		}
 	}while(flag==1);
 	GET_TIME(fim);
+	
 	printf("A solucao do SL foi finalizada com sucesso.\n");
-  printf("Tempo gasto:  %lf\n", fim-ini);
-	// printf("A solucao do SL eh: \n");
-	// for(i=0;i<n;i++)
-	// 	printf("%8.5f ",xn[i]);
+  printf("Tempo gasto no calculo do metodo de Jacobi:  %lf\n", fim-ini);
+
 	free(a);
 	free(b);
 	free(x);
