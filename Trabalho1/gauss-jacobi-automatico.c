@@ -33,8 +33,7 @@ void *tarefa(void *arg){
 	pthread_exit(NULL);
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
 	double ini, fim; //tomada de tempo
 	GET_TIME(ini);
 	double epsilon=0.00001;
@@ -63,7 +62,6 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "ERRO--malloc\n");
 		return 2;
 	}
-	// printf("\nInsira os coeficientes do sistema em linha: ");
 	gerarMatriz(n, a, nthreads);
 	gerarVetorB(n);
 
@@ -74,8 +72,7 @@ int main(int argc, char *argv[])
   printf("Tempo gasto na preparacao:  %lf\n", fim-ini);
 
 	GET_TIME(ini);
-	do
-	{
+	do{
 		//criar as threads
 		for(long int i=0; i<nthreads; i++) {
 				if(pthread_create(tid+i, NULL, tarefa, (void*) i)){
@@ -90,7 +87,8 @@ int main(int argc, char *argv[])
 			} 
 		}
 
-		flag=1; 
+		flag=1;
+		 
 		//verifica condicao de parada |x[i]-xn[i]|<epsilon para todo i
 		for(i=0;i<n;i++){
 			if(fabs(x[i]-xn[i])<epsilon){

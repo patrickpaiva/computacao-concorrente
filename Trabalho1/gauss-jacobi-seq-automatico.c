@@ -4,7 +4,6 @@
 #include <time.h>
 #include "timer.h"
 
-
 double **a,*b,*x, *xn;
 
 void gerarMatriz(int tamanho, double **a){
@@ -26,8 +25,7 @@ void gerarVetorB(int tamanho){
 	}
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
 	double ini, fim; //tomada de tempo
 	GET_TIME(ini);
 	double epsilon=0.00001,parcial;
@@ -55,33 +53,16 @@ int main(int argc, char *argv[])
 
 	gerarMatriz(n, a);
 	gerarVetorB(n);
-	// printf("Verifica a matriz: \n");
-	// for(int i = 0; i < n; i++){
-	// 	for(int j = 0; j< n; j++){
-	// 		printf("%lf ", *(*(a + i)+j));
-	// 	}
-	// 	printf("\n");
-	// }
-	// printf("Verifica o b: \n");
-	// for(int i = 0; i< n; i++){
-	// 	printf("%lf ", b[i]);
-	// }
-	// printf("\n");
 
 	for(i=0;i<n;i++)
 		x[i]=0; //inicializa o vetor x com zeros
 
-	// for(i=0;i<n;i++)
-	// 	printf(" x[%d] ",i);
-	// printf("\n");
 	GET_TIME(fim);
   printf("Tempo gasto na preparacao:  %lf\n", fim-ini);
 
 	GET_TIME(ini);	
-	do
-	{
-		for(i=0;i<n;i++)
-		{
+	do{
+		for(i=0;i<n;i++){
 			parcial=b[i];
 			for(j=0;j<n;j++){
 				if(j!=i)
@@ -89,10 +70,9 @@ int main(int argc, char *argv[])
 			}
 			xn[i]=parcial/(*(*(a + i)+i));
 		}
-		// for(i=0;i<n;i++)
-		// 	printf("%8.5f ",xn[i]);
-		// printf("\n");
-		flag=1; 
+
+		flag=1;
+
 		//verifica condicao de parada |x[i]-xn[i]|<epsilon para todo i
 		for(i=0;i<n;i++){
 			if(fabs(x[i]-xn[i])<epsilon){
@@ -107,10 +87,9 @@ int main(int argc, char *argv[])
 		}
 	}while(flag==1);
 	GET_TIME(fim);
+
 	printf("A solucao do SL foi finalizada com sucesso.\n");
   printf("Tempo gasto no calculo do metodo de Jacobi:  %lf\n", fim-ini);
-	// for(i=0;i<n;i++)
-	// 	printf("%8.5f ",xn[i]);
-	
+
 	return 1;
 }

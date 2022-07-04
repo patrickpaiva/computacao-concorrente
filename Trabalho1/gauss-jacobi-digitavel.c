@@ -25,8 +25,7 @@ void *tarefa(void *arg){
 	pthread_exit(NULL);
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
 	double ini, fim; //tomada de tempo
 	double epsilon=0.00001;
 	int i,j,flag;
@@ -91,8 +90,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	GET_TIME(ini);
-	do
-	{
+	do{
 		//criar as threads
 		for(long int i=0; i<nthreads; i++) {
 				if(pthread_create(tid+i, NULL, tarefa, (void*) i)){
@@ -112,6 +110,7 @@ int main(int argc, char *argv[])
 			printf("%8.5f ",xn[i]);
 		printf("\n");
 		flag=1; 
+
 		//verifica condicao de parada |x[i]-xn[i]|<epsilon para todo i
 		for(i=0;i<n;i++){
 			if(fabs(x[i]-xn[i])<epsilon){
@@ -125,11 +124,13 @@ int main(int argc, char *argv[])
 		}
 	}while(flag==1);
 	GET_TIME(fim);
+	
 	printf("A solucao do SL foi finalizada com sucesso.\n");
   printf("Tempo gasto no calculo do metodo de Jacobi:  %lf\n", fim-ini);
 	printf("A solucao do SL eh: \n");
 	for(i=0;i<n;i++)
 		printf("%8.5f ",xn[i]);
+	
 	free(a);
 	free(b);
 	free(x);

@@ -2,11 +2,9 @@
 #include<math.h>
 #include<stdlib.h>
 
-int main()
-{
+int main(){
 	double **a,*b,*x, *xn,epsilon=0.00001,parcial;
 	int i,j,n,flag;
-
 	printf("\nInsira o numero de variaveis do sistema: ");
 	scanf("%d",&n);
 
@@ -20,8 +18,7 @@ int main()
 	xn = (double *) malloc(n * sizeof(double));
 
 	printf("\nInsira os coeficientes do sistema em linha: ");
-	for(i=0;i<n;i++)
-	{
+	for(i=0;i<n;i++){
 		for(j=0;j<n;j++)
 		{
 			scanf("%lf",(*(a + i)+j));
@@ -30,17 +27,16 @@ int main()
 	printf("\nInsira o vetor b: ");
 	for(i=0;i<n;i++)
 		scanf("%lf",&b[i]);
+
 	for(i=0;i<n;i++)
 		x[i]=0; //inicializa o vetor x com zeros
 
 	for(i=0;i<n;i++)
-		printf(" x[%d] ",i);
+		printf(" x[%d] ",i); // titulos das iteracoes
 	printf("\n");
 
-	do
-	{
-		for(i=0;i<n;i++)
-		{
+	do{
+		for(i=0;i<n;i++){
 			parcial=b[i];
 			for(j=0;j<n;j++){
 				if(j!=i)
@@ -52,6 +48,7 @@ int main()
 			printf("%8.5f ",xn[i]);
 		printf("\n");
 		flag=1; 
+		
 		//verifica condicao de parada |x[i]-xn[i]|<epsilon para todo i
 		for(i=0;i<n;i++){
 			if(fabs(x[i]-xn[i])<epsilon){
@@ -65,10 +62,10 @@ int main()
 			}
 		}
 	}while(flag==1);
-
+	
 	printf("\nA solucao do SL eh: \n");
 	for(i=0;i<n;i++)
 		printf("%8.5f ",xn[i]);
-	
+
 	return 1;
 }
