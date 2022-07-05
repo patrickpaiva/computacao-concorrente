@@ -15,13 +15,13 @@ O sistema apenas retorna o vetor solução nas versões digitáveis. As versões
 
 Compilando a versão sequencial digitável:
 ```
-gcc -o gauss-jacobi-seq-digitavel gauss-jacobi-seq-digitavel.c -Wall -lpthread
+gcc gauss-jacobi-seq-digitavel.c -Wall -o gauss-jacobi-seq-digitavel -lpthread
 ```
 Execute e aguarde as orientações no próximo terminal.
 
 Compilando a versão concorrente automática:
 ```
-gcc -o gauss-jacobi-automatico gauss-jacobi-automatico.c -Wall -lpthread
+gcc gauss-jacobi-automatico.c -Wall -o gauss-jacobi-automatico -lpthread
 ```
 Rode na forma:
 ./gauss-jacobi-automatico.exe <numero threads> <numero de variaveis>
@@ -35,7 +35,8 @@ Com o objetivo de verificar a corretude do algoritmo, criamos uma versão que ge
 
 Compile normalmente:
 ```
-gcc -o gauss-jacobi-automatico-script gauss-jacobi-automatico-script.c -Wall -lpthread
+gcc gauss-jacobi-automatico-script.c -Wall -o gauss-jacobi-automatico-script -lpthread
+
 ```
 
 E execute na forma:
