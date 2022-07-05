@@ -60,5 +60,11 @@ int main() {
   printf("\nA solucao do SL eh: \n");
   for (i = 0; i < n; i++) printf("%8.5f ", xn[i]);
 
+  // libera memória alocada
+  free(a);
+  free(b);
+  free(x);
+  free(xn);
+
   return 1;
 }

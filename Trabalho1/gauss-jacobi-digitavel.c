@@ -28,7 +28,7 @@ void *tarefa(void *arg) {
 
 int main(int argc, char *argv[]) {
   double ini, fim;  // tomada de tempo
-  double epsilon = 0.00001;
+  double epsilon = 0.00001; // erro aceito tolerável
   int i, j, flag;
   pthread_t *tid;  // identificadores das threads no sistema
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
   for (i = 0; i < n; i++) printf(" x[%d] ", i);
   printf("\n");
 
-  GET_TIME(ini);
+  GET_TIME(ini);// inicio da marcação de tempo (realização do método do gauss jacobi)
   do {
     // criar as threads
     for (long int i = 0; i < nthreads; i++) {
@@ -119,13 +119,14 @@ int main(int argc, char *argv[]) {
       }
     }
   } while (flag == 1);
-  GET_TIME(fim);
+  GET_TIME(fim); // fim da marcação de tempo (realização do método do gauss jacobi)
 
   printf("A solucao do SL foi finalizada com sucesso.\n");
   printf("Tempo gasto no calculo do metodo de Jacobi:  %lf\n", fim - ini);
   printf("A solucao do SL eh: \n");
   for (i = 0; i < n; i++) printf("%8.5f ", xn[i]);
 
+// libera memória alocada
   free(a);
   free(b);
   free(x);
